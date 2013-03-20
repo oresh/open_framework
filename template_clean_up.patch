@@ -1,0 +1,203 @@
+ From 7ae945fbef94fa6571b820023ab6f9dedb642fb7 Mon Sep 17 00:00:00 2001
+From: kirill_cebotari <kirill.cebotari@wearepropeople.com>
+Date: Wed, 20 Mar 2013 15:23:55 -0700
+Subject: [PATCH 2/2] Issue: Template clean up
+
+---
+ templates/node.tpl.php |   46 +++++++++++++++---------------
+ templates/page.tpl.php |   73 ++++++++++++++++++++++++++----------------------
+ 2 files changed, 62 insertions(+), 57 deletions(-)
+
+diff --git a/templates/node.tpl.php b/templates/node.tpl.php
+index e618b4a..4b66cde 100644
+--- a/templates/node.tpl.php
++++ b/templates/node.tpl.php
+@@ -79,32 +79,30 @@
+  */
+ ?>
+ <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
+-
+-  <?php print $user_picture; ?>
+-
+-  <?php print render($title_prefix); ?>
+-  <?php if (!$page): ?>
+-    <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
+-  <?php endif; ?>
+-  <?php print render($title_suffix); ?>
+-
+-  <?php if ($display_submitted): ?>
+-    <div class="submitted">
+-      <?php print $submitted; ?>
+-    </div>
++  <?php 
++   print $user_picture; 
++   print render($title_prefix);
++   if (!$page): 
++  ?>
++  <h2 <?php print $title_attributes; ?>>
++    <a href="<?php print $node_url; ?>"><?php print $title; ?></a>
++  </h2>
++  <?php 
++   endif;
++   print render($title_suffix);
++   if ($display_submitted): 
++  ?>
++  <div class="submitted">
++    <?php print $submitted; ?>
++  </div>
+   <?php endif; ?>
+-
+-  <div class="content"<?php print $content_attributes; ?>>
+-    <?php
+-      // We hide the comments and links now so that we can render them later.
+-      hide($content['comments']);
+-      hide($content['links']);
+-      print render($content);
+-    ?>
++  <div class="content" <?php print $content_attributes; ?>>
++  <?php
++    hide($content['comments']);
++    hide($content['links']);
++    print render($content);
++  ?>
+   </div>
+-
+   <?php print render($content['links']); ?>
+-
+   <?php print render($content['comments']); ?>
+-
+ </article>
+diff --git a/templates/page.tpl.php b/templates/page.tpl.php
+index dd8bfd6..5423a55 100644
+--- a/templates/page.tpl.php
++++ b/templates/page.tpl.php
+@@ -10,79 +10,85 @@
+   </div>
+ </div>
+ <!-- /#skipnav -->
+-<?php if (($user->uid) && ($secondary_nav)): ?>
++
++<?php if (($user->uid) && ($secondary_nav)) { ?>
+ <div id="secondary-menu" class="clearfix secondary-menu"> <?php print render($secondary_nav); ?> </div>
+ <!-- /#secondary-menu -->
+-<?php endif; ?>
+-<?php if ($logo || $site_name || $site_slogan || ($page['header']) || ($page['search_box'])): ?>
++<?php } ?>
++
++<?php if ($logo || $site_name || $site_slogan || ($page['header']) || ($page['search_box'])) { ?>
+ <div id="header" class="clearfix header">
+   <div class="container">
+     <div class="row">
+       <div class="<?php if ($page['search_box']): print 'span8'; else: print 'span12'; endif; ?>">
+-        <?php if ($logo): ?>
++        <?php if ($logo) { ?>
+         <div id="logo" class="site-logo"> <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"> <img src="<?php print $logo; ?>" alt="<?php print $site_name; ?>" role="presentation" /> </a></div>
+-        <?php endif; ?>
++        <?php } ?>
+         <!-- /#logo -->
+-        <?php if ($site_name || $site_slogan): ?>
++        <?php if ($site_name || $site_slogan) { ?>
+         <div id="name-and-slogan">
+-          <?php if ($site_name): ?>
++          <?php if ($site_name) { ?>
+           <div id="site-name" class="site-name"><a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"><?php print $site_name; ?></a></div>
+-          <?php endif; ?>
+-          <?php if ($site_slogan): ?>
++          <?php }
++          if ($site_slogan) { ?>
+           <div id="site-slogan" class="site-slogan"><?php print $site_slogan; ?></div>
+-          <?php endif; ?>
++          <?php } ?>
+         </div>
+-        <?php endif; ?>
+-        <?php if (!($site_name || $site_slogan)): ?>
++        <?php } ?>
++        <?php if (!($site_name || $site_slogan)) { ?>
+            <div id="site" class="hide"><div id="name"><a href="<?php print $front_page; ?>"><?php print $my_site_title; ?></a></div></div>
+-        <?php endif; ?>
++        <?php } ?>
+         <!-- /#name-and-slogan -->
+-        <?php if ($page['header']): ?>
++        <?php if ($page['header']) { ?>
+         <div id="header-content" class="row-fluid header-content"><?php print render($page['header']); ?></div>
+         <!-- /#header-content -->
+-        <?php endif; ?>
++        <?php } ?>
+       </div>
+     </div>
+   </div>
+ </div>
+ <!-- /#header -->
+-<?php endif; ?>
+-<?php if (($main_menu) || ($page['search_box'])): ?>
++<?php } ?>
++
++<?php if (($main_menu) || ($page['search_box'])) { ?>
+ <div id="main-menu" class="clearfix site-main-menu">
+   <div class="container">
+     <div class="navbar">
+-      <?php if ($main_menu): ?>
++      <?php if ($main_menu) { ?>
+       <div class="navbar-inner">
+         <div class="container">
+-          <?php endif; ?>
+-          <?php if ($page['search_box']): ?>
++          <?php } ?>
++          <?php if ($page['search_box']) { ?>
+           <div id="nav-search" class="nav-search"> <?php print render($page['search_box']); ?> </div>
+-          <?php endif; ?>
+-          <?php if ($main_menu): ?>
++          <?php } ?>
++          <?php if ($main_menu) { ?>
+           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
+-          <?php if ($primary_nav || !empty($page['navigation'])): ?>
++          <?php if ($primary_nav || !empty($page['navigation'])) { ?>
+           <div class="nav-collapse collapse">
+             <nav role="navigation">
+-              <?php if (($primary_nav) && empty($page['navigation'])): ?>
++              <?php if (($primary_nav) && empty($page['navigation'])) { ?>
+               <?php print render($primary_nav); ?> 
+               <!-- /#primary-menu -->
+-              <?php endif; ?>
+-              <?php if (!empty($page['navigation'])): ?>
+-              <?php print render($page['navigation']); ?>
+-              <?php endif; ?>
++              <?php } ?>
++              <?php if (!empty($page['navigation'])) { 
++                print render($page['navigation']); } 
++              ?>
+             </nav>
+           </div>
+-          <?php endif; ?>
+-          <?php endif; ?>
+-          <?php if ($main_menu): ?>
++          <?php 
++              } 
++            } 
++          ?>
++          <?php if ($main_menu) { ?>
+         </div>
+       </div>
+-      <?php endif; ?>
++      <?php } ?>
+     </div>
+   </div>
+ </div>
+ <!-- /#main-menu -->
+-<?php endif; ?>
++<?php } ?>
++
+ <div id="main" class="clearfix main">
+   <div class="container">
+     <?php if ($breadcrumb): ?>
+@@ -101,6 +107,7 @@
+       </div>
+       <!-- /#sidebar-first -->
+       <?php endif; ?>
++
+       <div id="content" class="mc-content <?php if (($page['sidebar_first']) && ($page['sidebar_second'])): print 'span6'; elseif (($page['sidebar_first']) || ($page['sidebar_second'])): print 'span9'; else: print 'span12'; endif; ?>">
+         <div id="content-wrapper" class="content-wrapper">
+           <div id="content-head" class="row-fluid content-head">
+-- 
+1.7.9.5
+
